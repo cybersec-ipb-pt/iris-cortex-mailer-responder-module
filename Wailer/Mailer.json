@@ -1,0 +1,59 @@
+{
+  "name": "Wailer",
+  "version": "1.1",
+  "author": "VLK14",
+  "url": "https://github.com/cybersec-ipb-pt/iris-cortex-mailer-responder-module",
+  "license": "AGPL-V3",
+  "description": "Send an email with information from a DFIR-IRIS case note",
+  "dataTypeList": ["dfir-iris-case"],
+  "command": "/vol/cortex/application/Mailer/mailer.py",
+  "baseConfig": "MailerTest",
+  "configurationItems": [
+    {
+      "name": "from",
+      "description": "email address from which the mail is send",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "bcc",
+      "description": "bcc email address",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "smtp_host",
+      "description": "SMTP server used to send mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "smtp_port",
+      "description": "SMTP server port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 25
+    },
+    {
+      "name": "smtp_user",
+      "description": "SMTP server user",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "user"
+    },
+    {
+      "name": "smtp_pwd",
+      "description": "SMTP server password",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "pwd"
+    }
+  ]
+}
