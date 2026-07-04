@@ -4,7 +4,7 @@ import json
 import time
 import traceback
 import requests
-from typing import Any, Dict
+
 from cortex4py.api import Api
 import iris_interface.IrisInterfaceStatus as InterfaceStatus
 
@@ -14,7 +14,7 @@ class MailerHandler(object):
         self.server_config = server_config or {}
         self.log = logger
 
-    def _extract_note_info(self, text: str) -> str:
+    def extract_note_info(self, text):
         subject = ""
         recipient = ""
         lines = []
@@ -46,16 +46,16 @@ class MailerHandler(object):
 
         return subject, recipient, body
 
-    def _call_cortex_responder(self, subject: str, recipient: str, message_body: str, case_id: str = "") -> Dict[str, Any]:
+    def call_cortex_responder(self, subject, recipient, message_body, case_id):
         cortex_url = str(self.mod_config.get("cortexresponder_url")).strip().rstrip("/")
         cortex_key = str(self.mod_config.get("cortexresponder_key")).strip()
         responder_name = str(self.mod_config.get("mailer_responder_name")).strip()
         poll_seconds = int(self.mod_config.get("mailer_poll_seconds"))
         timeout_seconds = int(self.mod_config.get("mailer_timeout_seconds"))
 
-        api = Api(cortex_url, cortex_key, verify_cert=False)
+        api = Api(cortex_url, cortex_key, verify_cert=self.mod_config.get("cortexresponder_verify_cert"))
         headers = {"Authorization": f"Bearer {cortex_key}"}
-        r = requests.get(f"{cortex_url}/api/user/current", headers=headers, verify=False)
+        r = requests.get(f"{cortex_url}/api/user/current", headers=headers, verify=self.mod_config.get("cortexresponder_verify_cert"))
         cortex_info = r.json()
 
         payload = {
@@ -135,7 +135,7 @@ class MailerHandler(object):
 
             return InterfaceStatus.I2Success(data={"skipped": True, "reason": "not_thephish_notification_note"})
 
-        subject, recipient, message_body = self._extract_note_info(content)
+        subject, recipient, message_body = self.extract_note_info(content)
 
         if not recipient:
             msg = f"Could not extract notification recipient from note {title}"
@@ -144,7 +144,7 @@ class MailerHandler(object):
             return InterfaceStatus.I2Error(msg)
 
         try:
-            result = self._call_cortex_responder(
+            result = self.call_cortex_responder(
                 subject=subject,
                 recipient=recipient,
                 message_body=message_body,
