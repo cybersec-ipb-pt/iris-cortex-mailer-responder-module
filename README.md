@@ -33,7 +33,7 @@ The below steps assume you already have your own [Cortex](https://github.com/the
 
 To install the responder, copy the [Wailer](./Wailer/) directory to the Cortex root directory.
 
-Create or modify the Cortex Dockerfile to include python, python3-pip and python3-venv packages. Copy the Wailer folder into the image and install the libraries defined in the requirements.txt file.
+Create or modify the Cortex Dockerfile to include python, python3-pip and python3-venv packages. Copy the Wailer folder into the image as `Mailer` and install the libraries defined in the requirements.txt file.
 
 Below is an example of the Dockerfile.
 
