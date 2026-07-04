@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+
 import ssl
 import smtplib
 from cortexutils.responder import Responder
@@ -44,6 +45,7 @@ class Mailer(Responder):
         if self.smtp_user and self.smtp_pwd:
             try:
                 context = ssl.create_default_context()
+                context.minimum_version = ssl.TLSVersion.TLSv1_2
 
                 # STANDARD CONNECTION, TRY ADDING TLS
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
@@ -52,15 +54,13 @@ class Mailer(Responder):
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
                     server.send_message(msg, self.mail_from, recipients)
-
-                # SMTP_SSL CONNECTION
             except smtplib.SMTPServerDisconnected:
+                # SMTP_SSL CONNECTION
                 with smtplib.SMTP_SSL(
                     self.smtp_host, self.smtp_port, context=context
                 ) as server:
                     server.login(self.smtp_user, self.smtp_pwd)
                     server.send_message(msg, self.mail_from, recipients)
-
             except Exception:
                 # STANDARD CONNECTION WITHOUT TLS
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
