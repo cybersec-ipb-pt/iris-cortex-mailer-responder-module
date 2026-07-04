@@ -24,6 +24,14 @@ module_configuration = [
         "type": "sensitive_string",
     },
     {
+        "param_name": "cortexresponder_verify_cert",
+        "param_human_name": "Verify Certificate",
+        "param_description": "Set to True to verify Cortex Certificate",
+        "default": True,
+        "mandatory": True,
+        "type": "bool",
+    },
+    {
         "param_name": "mailer_responder_name",
         "param_human_name": "Cortex Responder Name",
         "param_description": "Exact Cortex responder name to run",
