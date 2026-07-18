@@ -19,7 +19,7 @@ The module was tested with:
 | [DFIR-IRIS](https://github.com/dfir-iris/iris-web?tab=readme-ov-file) | [Cortex](https://hub.docker.com/r/thehiveproject/cortex/) |
 | --------------------------------------------------------------------- | --------------------------------------------------------- |
 | v2.4.22                                                               | 3.2.1-1                                                   |
-| v2.4.27                                                               | 4.0.1-1                                                   |
+| v2.4.27                                                               | 4.0.1-1, 4.1.0-1                                          |
 
 The module requires a working Cortex instance configured with an organization, a user with the read/analyze roles, and the user's API Key.
 
@@ -38,7 +38,7 @@ Create or modify the Cortex Dockerfile to include python, python3-pip and python
 Below is an example of the Dockerfile.
 
 ```Dockerfile
-FROM thehiveproject/cortex:4.0.1-1
+FROM thehiveproject/cortex:4.1.0-1
 
 RUN rm /etc/apt/sources.list.d/corretto.list && \
     apt update && \
@@ -46,7 +46,7 @@ RUN rm /etc/apt/sources.list.d/corretto.list && \
 
 RUN mkdir -p /cortex/application
 
-COPY ./Mailer /vol/cortex/application/Mailer
+COPY ./Wailer /vol/cortex/application/Mailer
 
 RUN chown -R nobody:nogroup /vol
 
